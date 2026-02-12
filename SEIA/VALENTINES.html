@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Valentine 💖</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            margin:0;
+            padding:0;
+            text-align:center;
+            font-family:Arial, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            overflow:hidden;
+        }
+
+        h1 { color:#e63946; margin-top:30px; }
+
+        button {
+            margin:10px;
+            padding:10px 20px;
+            font-size:18px;
+            border:none;
+            border-radius:10px;
+            cursor:pointer;
+            background-color:#ff4d6d;
+            color:white;
+            transition:0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            background-color:#e63946;
+        }
+
+        #message {
+            font-size:22px;
+            color:#e63946;
+            font-weight:bold;
+            display:none;
+            margin-top:20px;
+        }
+
+        #heart {
+            font-size:60px;
+            color:red;
+            display:none;
+            animation: beat 1s infinite;
+            margin-top:20px;
+        }
+
+        @keyframes beat {
+            0%,100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        .letter {
+            position:absolute;
+            font-size:18px;
+            color:#e63946;
+            animation: float 4s linear forwards;
+            pointer-events:none;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); opacity:1; }
+            100% { transform: translateY(-500px) translateX(50px); opacity:0; }
+        }
+
+        .floating-pic {
+            position: absolute;
+            border-radius:10px;
+            animation-duration: 6s;
+            animation-timing-function: linear;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0deg); opacity:1; }
+            100% { transform: translateY(-200px) rotate(360deg); opacity:0; }
+        }
+
+        @keyframes floatDown {
+            0% { transform: translateY(-200px) rotate(0deg); opacity:1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity:0; }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Can you be my Valentine's date? ❤️</h1>
+<img src="photo1.jpg" width="300" style="border-radius:15px;" alt="Us">
+<br><br>
+<button onclick="sayYes()">Yes 💕</button>
+<button onclick="sayYes()">Yes 😘</button>
+
+<p id="message">Yay!!! I love you ❤️🥰</p>
+<div id="heart">❤️</div>
+<audio id="music" src="music.mp3"></audio>
+
+<script>
+const pics = [
+    "photo1.jpg",
+    "photo2.jpg",
+    "photo3.jpg",
+    "photo4.jpg",
+    "photo5.jpg",
+    "photo6.jpg",
+    "photo7.jpg",
+    "photo8.jpg",
+    "photo9.jpg",
+    "photo10.jpg",
+    "photo11.jpg",
+    "photo12.jpg"
+    
+];
+
+let floatInterval;
+
+// When Yes is clicked
+function sayYes() {
+    document.getElementById("message").style.display = "block";
+    document.getElementById("heart").style.display = "block";
+    document.getElementById("music").play();
+
+    // Confetti 🎉
+    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+
+    // Floating letters 💌
+    const letters = ['💌','💖','💘','❤️','💕'];
+    for(let i=0;i<15;i++){
+        const span=document.createElement('span');
+        span.className='letter';
+        span.innerText=letters[Math.floor(Math.random()*letters.length)];
+        span.style.left=Math.random()*window.innerWidth+'px';
+        span.style.fontSize=(16+Math.random()*20)+'px';
+        document.body.appendChild(span);
+        setTimeout(()=>span.remove(),4000);
+    }
+
+    // Start continuous floating pictures
+    startFloatingPics();
+}
+
+// Create floating pic
+function createFloatingPic(){
+    const img = document.createElement("img");
+    img.src = pics[Math.floor(Math.random()*pics.length)];
+    img.className="floating-pic";
+    img.style.left = Math.random() * window.innerWidth + "px";
+    img.style.width = 50 + Math.random()*100 + "px";
+
+    // Randomly float up or down
+    if(Math.random() < 0.5){
+        img.style.animationName = "floatUp";
+    } else {
+        img.style.animationName = "floatDown";
+    }
+
+    document.body.appendChild(img);
+    setTimeout(()=>img.remove(),6000);
+}
+
+// Start continuous floating pics
+function startFloatingPics(){
+    if(!floatInterval){ // avoid multiple intervals
+        floatInterval = setInterval(createFloatingPic, 500); // every 0.5s
+    }
+}
+</script>
+
+</body>
+</html>
